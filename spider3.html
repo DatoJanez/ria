@@ -1,0 +1,310 @@
+<html>
+    <head>
+            <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+            <meta content="utf-8" http-equiv="encoding">
+    </head>
+    <body>
+        <!-- Styles -->
+<style>
+    #chartdiv1, #chartdiv2, #chartdiv3, #chartdiv4 {
+        left: 0;
+    top: 0;
+    width: 49%;
+    height: 500px;
+    display: inline-block;
+    }
+    g[aria-labelledby="id-537-title"],g[aria-labelledby="id-62-title"], g[aria-labelledby="id-183-title"], g[aria-labelledby="id-304-title"] , g[aria-labelledby="id-425-title"] {
+        display: none;  
+    }
+    body{
+        background: #f4efe4;
+        margin: 0;
+    }
+    .cont-j1, .cont-j2{
+        position: absolute;
+        top:0;
+        left:0;
+        width: 100%;
+        height: 50%
+    }
+    .cont-j1{
+        transform: translate(3px,5px)
+    }
+    #chartdiv{
+        position: absolute;
+        width: 80%;
+        height: 50%;
+        bottom: 0;
+        left:10%;
+    }
+    g[role="region"]{
+        clip-path: none;
+    }
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- Resources -->
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    
+    <!-- Chart code -->
+    <script>
+        const createSpider = (data, domId, color) => {
+            var chart = am4core.create(domId, am4charts.RadarChart);
+    
+            /* Add data */
+            chart.data = data;
+            
+            /* Create axes */
+            var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+            categoryAxis.dataFields.category = "direction";
+            categoryAxis.renderer.grid.template.disabled = true;
+            
+            categoryAxis.renderer.labels.template.disabled = true;
+            var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+            valueAxis.renderer.gridType = "polygons";
+            valueAxis.renderer.grid.template.disabled = true;
+            valueAxis.renderer.grid.stroke = am4core.color('red');
+            valueAxis.renderer.labels.template.disabled = true;
+            valueAxis.min = 0;
+            valueAxis.max = 100; 
+            /* Create and configure series */
+            var series = chart.series.push(new am4charts.RadarColumnSeries());
+            series.dataFields.valueY = "value";
+            series.dataFields.categoryX = "direction";
+            series.strokeWidth = 0;
+            series.fillOpacity = 1;
+            series.dataFields.fill = "color";
+            series.columns.template.adapter.add("fill", (fill, target) => {
+                // console.log(target.dataItem)
+                return am4core.color(color || target.dataItem.fill);
+                // return chart.colors.getIndex(target.dataItem.index);
+            });
+            // series.fill = am4core.color(color);
+        }
+    am4core.ready(function() {
+    var data1 = [ 
+    {color: "#e34659","direction": "SDG1","value": 67 },
+    {color: "#dcb057","direction": "SDG2","value": 80 },
+    {color: "#68ab60","direction": "SDG3","value": 50 },
+    {color: "#ca454e","direction": "SDG4","value": 27 },
+    {color: "#ea5e4c","direction": "SDG5","value": 43 },
+    {color: "#4bc3e1","direction": "SDG6","value": 50 },
+    {color: "#f4c737","direction": "SDG7","value": 100 },
+    {color: "#ae425f","direction": "SDG8","value": 89 },
+    {color: "#ed7f4d","direction": "SDG9","value": 100 },
+    {color: "#de3f91","direction": "SDG10","value": 43 },
+    {color: "#f2a84a","direction": "SDG11","value": 100 },
+    {color: "#c49b4c","direction": "SDG12","value": 0 },
+    {color: "#5e9060","direction": "SDG13","value": 100 },
+    {color: "#44a3d2","direction": "SDG14","value": 100 },
+    {color: "#72bf61","direction": "SDG15","value": 100 },
+    {color: "#3a7fa8","direction": "SDG16","value": 77 },
+    {color: "#3b657e","direction": "SDG17","value": 25 }, ]
+    data2 = [ 
+    {color: "#e34659","direction": "SDG1","value": 83},
+    {color: "#dcb057","direction": "SDG2","value": 100},
+    {color: "#68ab60","direction": "SDG3","value": 100},
+    {color: "#ca454e","direction": "SDG4","value": 100},
+    {color: "#ea5e4c","direction": "SDG5","value": 43},
+    {color: "#4bc3e1","direction": "SDG6","value": 100},
+    {color: "#f4c737","direction": "SDG7","value": 100},
+    {color: "#ae425f","direction": "SDG8","value": 89},
+    {color: "#ed7f4d","direction": "SDG9","value": 100},
+    {color: "#de3f91","direction": "SDG10","value": 57},
+    {color: "#f2a84a","direction": "SDG11","value": 100},
+    {color: "#c49b4c","direction": "SDG12","value": 100},
+    {color: "#5e9060","direction": "SDG13","value": 100},
+    {color: "#44a3d2","direction": "SDG14","value": 100},
+    {color: "#72bf61","direction": "SDG15","value": 100},
+    {color: "#3a7fa8","direction": "SDG16","value": 62},
+    {color: "#3b657e","direction": "SDG17","value": 25}
+        ]
+    createSpider(data1, 'chartdiv1', 'rgba(0,0,0,.1)')
+    createSpider(data2,'chartdiv2', 'rgba(0,0,0,.1)')
+    createSpider(data1, 'chartdiv3')
+    createSpider(data2,'chartdiv4')
+    drowChart();
+    }); 
+    var chart;
+    const sdgColors = ["", "#e5233d", "#dda73a", "#4ca146", "#c7212f", "#ee402d", "#28bfe6", "#fbc412", "#a31d44", "#f26a2e", "#df1a83", "#f89d2a", "#bf8d2c", "#407f46", "#1f97d4", "#59ba47", "#136a9f", "#14496b"]
+
+    const drowChart = () => {
+        var ll = budj.split('\n');
+        chart = am4core.create("chartdiv", am4charts.SankeyDiagram);
+        var orgs = [...new Set(ll.map(f => f.split(',')[2]))]
+        orgs.forEach(o => {
+            // chart.data.push({ fromName: o, from: o, nodeColor: "#367993"})
+        })
+        ll.forEach(b => {
+            let spl = b.split(',')
+            var sdg = spl[0].replace('Goal ', '')
+            // chart.data.push({ fromName: spl[2], from: spl[2], nodeColor: "#367993"})
+            // chart.data.push({ colorMode: 'toNode', toName: sdg, to: sdg, nodeColor: sdgColors[sdg]})
+            chart.data.push({ colorMode: 'toNode', from: spl[2], to: sdg, 
+            value: Math.sqrt(spl[spl.length - 1 ]), 
+            nodeColor: sdgColors[sdg], 
+            linkColor: sdgColors[sdg]})
+        })
+        
+        
+        
+        chart.dataFields.fromName = "from";
+        chart.dataFields.toName = "to";
+        chart.dataFields.value = "value";
+
+        chart.dataFields.color = "nodeColor";
+        // chart.dataFields.category = "color";
+        // chart.dataFields.color = "color";
+        // chart.dataFields.category = 'category'
+        chart.nodePadding = 5;
+        // chart.nodeMargin = 5;
+        // chart.nodePadding = 0.5;
+        // chart.minNodeSize = 0;
+        // chart.minNodeSize = 0.001;
+        chart.minNodeSize = .02;
+        chart.sortBy = "type";
+        chart.fontSize = 12;
+        chart.orderByField = 'type'
+
+        chart.nodesContainer.minWidth = 100
+
+        var nodeTemplate = chart.nodes.template;
+        // nodeTemplate.readerTitle = "Click to show/hide or drag to rearrange";
+        nodeTemplate.showSystemTooltip = false;
+        // nodeTemplate.propertyFields.fill = "color";
+        // nodeTemplate.tooltipText = "{name}'s kisses: {total}";
+
+        nodeTemplate.fillOpacity = .6;
+
+
+        nodeTemplate.width = 5;    
+        // nodeTemplate.marginRight = 50;    
+        // nodeTemplate.marginleft = 50;    
+        nodeTemplate.cursorOverStyle = am4core.MouseCursorStyle.pointer;
+
+        var linkTemplate = chart.links.template;
+        linkTemplate.strokeOpacity = 0;
+        linkTemplate.fillOpacity = .4;
+        // linkTemplate.tooltipText = "{fromName} & {toName}:{value.value}";
+        linkTemplate.propertyFields.fill = "linkColor";
+        
+        chart.nodes.template.nameLabel.label.marginLeft = 150
+ 
+        // propertyFields.locationX
+
+        nodeTemplate.nameLabel.adapter.add("locationX", function(location, target) {
+            switch (target.parent.level) {
+                // case 0:
+                //   return 1;
+                // case 1:
+                //   return -1;
+                default:
+                return -10;
+            }
+        });
+
+    }
+    var budj = `Goal 16,Public Sector Auditors Certification Program,Parliament,150,Peace,"  540,000 ","  600,000 ","  651,000 ","  702,000 ",2493000
+Goal 16,Development of election environment,Central Election Commission ,150,Peace,"  11,998,900 ","  14,000,000 ","  14,500,000 ","  16,000,000 ",56498900
+Goal 16,Promotion of election institution development and civil education,Central Election Commission ,150,Peace,"  1,179,500 ","  1,450,000 ","  1,500,000 ","  1,600,000 ",5729500
+Goal 16,Funding of political parties and non-governmental sector,Central Election Commission ,150,Peace,"  14,308,700 ","  14,308,800 ","  14,308,800 ","  13,709,000 ",56635300
+Goal 16,Measures for holding elections ,Central Election Commission ,150,Peace,  -   ,"  41,682,200 ","  42,412,200 ",  -   ,84094400
+Goal 16,Development and Promotion of Common Courts System,Common Courts,150,Peace,"  76,080,000 ","  71,580,000 ","  71,580,000 ","  71,580,000 ",290820000
+Goal 16,Training and retraining of judges and court staff,Common Courts,150,Peace,"  1,900,000 ","  1,850,000 ","  1,850,000 ","  1,850,000 ",7450000
+Goal 16,Provision of state security,State security service of Georgia,151,Peace,"  119,920,000 ","  119,920,000 ","  119,920,000 ","  114,920,000 ",474680000
+Goal 16,Provision of operation – technical activities ,State security service of Georgia,151,Peace,"  16,080,000 ","  16,080,000 ","  16,080,000 ","  16,080,000 ",64320000
+Goal 16,Management of State Finances ,Ministry of Finance ,151,Peace,"  22,120,000 ","  22,120,000 ","  22,120,000 ","  22,120,000 ",88480000
+Goal 16,Mobilization of revenues and improvement of taxpayer services,Ministry of Finance ,151,Peace,"  165,125,000 ","  166,100,000 ","  168,100,000 ","  170,320,000 ",669645000
+Goal 16,Prevention of economic crime,Ministry of Finance ,151,Peace,"  21,485,000 ","  21,485,000 ","  21,485,000 ","  21,485,000 ",85940000
+Goal 16,Electronic and analytical provision of the management of finances ,Ministry of Finance ,151,Peace,"  9,900,000 ","  9,700,000 ","  9,700,000 ","  9,700,000 ",39000000
+Goal 16,Rising qualifications of employed in the financial sector,Ministry of Finance ,151,Peace,"  1,395,000 ","  1,445,000 ","  1,495,000 ","  1,545,000 ",5880000
+Goal 16,Supervision of accounting reporting and audit,Ministry of Finance ,151,Peace,"  1,000,000 ","  1,000,000 ","  1,000,000 ","  1,000,000 ",4000000
+Goal 16,Effective disposal of the transferred property,Ministry of Finance ,151,Peace,"  7,400,000 ","  8,000,000 ","  8,000,000 ","  8,000,000 ",31400000
+Goal 8,Development and implementation of economic policy,Ministry of Economic and Sustainable Development,152,Prosperity,"  23,430,000 ","  23,430,000 ","  23,430,000 ","  23,430,000 ",93720000
+Goal 8,Regulation of technical and construction field,Ministry of Economic and Sustainable Development,152,Prosperity,"  1,933,000 ","  1,933,000 ","  1,933,000 ","  1,933,000 ",7732000
+Goal 8,Development of standardization and metrology sector ,Ministry of Economic and Sustainable Development,152,Prosperity,"  2,176,000 ","  2,076,000 ","  2,076,000 ","  2,076,000 ",8404000
+Goal 8,Management and development of accreditation process ,Ministry of Economic and Sustainable Development,152,Prosperity,"  1,240,000 ","  1,340,000 ","  1,390,000 ","  1,390,000 ",5360000
+Goal 8,Promotion of tourism development ,Ministry of Economic and Sustainable Development,152,Prosperity,"  51,940,000 ","  52,600,000 ","  52,600,000 ","  52,600,000 ",209740000
+Goal 8,Development of entrepreneurship ,Ministry of Economic and Sustainable Development,152,Prosperity,"  52,940,000 ","  53,000,000 ","  53,000,000 ","  53,000,000 ",211940000
+Goal 9,Development of technologies and innovations in Georgia ,Ministry of Economic and Sustainable Development,152,Prosperity,"  9,880,000 ","  10,880,000 ","  10,880,000 ","  10,880,000 ",42520000
+Goal 7,Regulation and management of oil and gas sector,Ministry of Economic and Sustainable Development,152,Prosperity,"  1,040,000 ","  1,040,000 ","  1,040,000 ","  1,040,000 ",4160000
+Goal 7,Reimbursement of the costs for supplying natural gas to highland villages of Kazbegi and Dusheti municipalities ,Ministry of Economic and Sustainable Development,152,Prosperity,"  8,000,000 ","  8,000,000 ","  8,000,000 ","  8,000,000 ",32000000
+Goal 9,Georgian National Innovations Ecosystem Project (IBRD),Ministry of Economic and Sustainable Development,152,Prosperity,"  10,000,000 ","  40,000,000 ","  40,000,000 ",  -   ,90000000
+Goal 7,Vardnili and Enguri hydropower plants rehabilitation project (EBRDEIBEU),Ministry of Economic and Sustainable Development,152,Prosperity,"  25,000,000 ","  31,590,000 ","  31,565,000 ",  -   ,88155000
+Goal 7,Development of a system of power transmission network,Ministry of Economic and Sustainable Development,152,Prosperity,"  86,900,000 ","  296,000,000 ","  376,700,000 ","  196,100,000 ",955700000
+Goal 7,Improvement of electricity and natural gas supply to population ,Ministry of Economic and Sustainable Development,152,Prosperity,"  43,800,000 ","  43,800,000 ","  43,800,000 ","  43,800,000 ",175200000
+Goal 4,Promotion of marine vocational education,Ministry of Economic and Sustainable Development,152,People,"  7,400,000 ","  7,545,000 ","  7,600,000 ","  7,900,000 ",30445000
+Goal 9,Development and management of regional and infrastructure development policies,Ministry of Regional Development and Infrastructure ,153,Prosperity,"  8,900,000 ","  9,400,000 ","  9,400,000 ","  9,400,000 ",37100000
+Goal 9,Road Infrastructure Improvement Measures,Ministry of Regional Development and Infrastructure ,153,Prosperity,"  1,302,050,000 ","  1,950,000,000 ","  2,600,000,000 ","  3,000,000,000 ",8852050000
+Goal 9,Rehabilitation of regional and municipal infrastructure,Ministry of Regional Development and Infrastructure ,153,Prosperity,"  373,750,000 ","  226,000,000 ","  195,100,000 ","  212,000,000 ",1006850000
+Goal 6,Restoration and rehabilitation of water supply infrastructure,Ministry of Regional Development and Infrastructure ,153,Prosperity,"  226,200,000 ","  255,000,000 ","  285,000,000 ","  315,000,000 ",1081200000
+Goal 11,Solid wastes management program ,Ministry of Regional Development and Infrastructure ,153,Prosperity,"  39,900,000 ","  111,600,000 ","  187,800,000 ","  155,900,000 ",495200000
+Goal 9,Provision of support to Internally Displaced People ,Ministry of Regional Development and Infrastructure ,153,Prosperity,"  50,000,000 ","  70,000,000 ","  80,000,000 ","  100,000,000 ",300000000
+Goal 4,Construction and Rehabilitation of General Education Infrastructure,Ministry of Regional Development and Infrastructure ,153,Prosperity,"  72,500,000 ","  70,000,000 ","  70,000,000 ","  70,000,000 ",282500000
+Goal 16,Elaboration and management of state policy including criminal justice reform for legal support of lawmaking and national interests,Ministry of Justice,153,Peace,"  8,490,000 ","  8,490,000 ","  8,490,000 ","  8,490,000 ",33960000
+Goal 16,Establishment of  penitentiary system based on international standards,Ministry of Justice,153,Peace,"  146,745,000 ","  147,105,000 ","  147,105,000 ","  147,005,000 ",587960000
+Goal 16,Retraining of the staff of the Ministry of Justice of Georgia and other stakeholders ,Ministry of Justice,153,Peace,"  4,795,000 ","  4,775,000 ","  4,775,000 ","  5,175,000 ",19520000
+Goal 16,Development of e-governance ,Ministry of Justice,153,Peace,"  2,895,000 ","  2,735,000 ","  2,735,000 ","  2,735,000 ",11100000
+Goal 16,Crime prevention development of probation system and resocialization of former prisoners,Ministry of Justice,153,Peace,"  10,066,000 ","  9,466,000 ","  9,466,000 ","  9,466,000 ",38464000
+Goal 16,Development and accessibility of Public Service Hall services ,Ministry of Justice,153,Peace,"  23,220,000 ","  17,130,000 ","  17,430,000 ","  17,430,000 ",75210000
+Goal 1,Land Market Development (WB),Ministry of Justice,153,People,"  2,100,000 ",  -   ,  -   ,  -   ,2100000
+Goal 16,Development of entire state technologies  ,Ministry of Justice,153,Peace,"  3,325,000 ","  4,000,000 ","  4,200,000 ","  4,600,000 ",16125000
+Goal 16,Development and accessibility of the services of the State Services Development Agency ,Ministry of Justice,153,Peace,"  66,935,000 ","  63,995,000 ","  63,995,000 ","  59,215,000 ",254140000
+Goal 16,Development and accessibility of the services of LEPL – Public Registry ,Ministry of Justice,153,Peace,"  60,630,000 ","  48,754,000 ","  45,754,000 ","  45,754,000 ",200892000
+Goal 16,Systematization of normative acts and development of translation center ,Ministry of Justice,153,Peace,"  1,950,000 ","  1,900,000 ","  1,950,000 ","  2,000,000 ",7800000
+Goal 16,Ensuring efficiency of the services of LEPL - the National Bureau of Enforcement and making them available to all stakeholders ,Ministry of Justice,153,Peace,"  35,375,000 ","  28,200,000 ","  28,200,000 ","  28,200,000 ",119975000
+Goal 1,Social protection of the population,Ministry of Displaced persons from Occupied Territories Labour Health and Social Aid,154,People,"  2,783,892,000 ","  3,056,700,000 ","  3,125,000,000 ","  3,210,000,000 ",12175592000
+Goal 3,Population healthcare ,Ministry of Displaced persons from Occupied Territories Labour Health and Social Aid,154,People,"  1,044,565,000 ","  1,047,242,000 ","  1,079,802,000 ","  1,094,802,000 ",4266411000
+Goal 3,Rehabilitation of and equipping  healthcare facilities ,Ministry of Displaced persons from Occupied Territories Labour Health and Social Aid,154,People,"  20,000,000 ","  20,000,000 ","  20,000,000 ","  20,000,000 ",80000000
+Goal 10,Facilitating IDPs and migrants ,Ministry of Displaced persons from Occupied Territories Labour Health and Social Aid,154,Prosperity,"  57,850,000 ","  65,050,000 ","  65,050,000 ","  65,050,000 ",253000000
+Goal 8,Program for reforming labor and employment system ,Ministry of Displaced persons from Occupied Territories Labour Health and Social Aid,154,Prosperity,"  4,290,000 ","  4,300,000 ","  4,300,000 ","  4,300,000 ",17190000
+Goal 4,Professional military training,Ministry of Defense ,154,People,"  47,190,000 ","  47,330,000 ","  50,330,000 ","  55,330,000 ",200180000
+Goal 3,Health and social protection,Ministry of Defense ,154,People,"  63,750,000 ","  64,300,000 ","  69,300,000 ","  77,300,000 ",274650000
+Goal 9,Infrastructure development,Ministry of Defense ,154,Prosperity,"  26,500,000 ","  31,000,000 ","  41,000,000 ","  46,500,000 ",145000000
+Goal 16,International peacekeeping missions,Ministry of Defense ,154,Peace,"  42,750,000 ","  44,300,000 ","  44,300,000 ","  44,300,000 ",175650000
+Goal 9,Development of scientific research and military industry ,Ministry of Defense ,154,Prosperity,"  42,500,000 ","  45,500,000 ","  57,500,000 ",  -   ,145500000
+Goal 16,Maintaining/development defense capabilities ,Ministry of Defense ,154,Peace,"  141,200,000 ","  163,000,000 ","  194,000,000 ","  223,000,000 ",721200000
+Goal 16,Development of defense capacities,Ministry of Defense ,154,Peace,"  55,000,000 ","  55,000,000 ","  55,000,000 ","  55,000,000 ",220000000
+Goal 16,Public order and deepening of international cooperation ,Ministry of Internal Affairs,155,Peace,"  528,040,000 ","  528,040,000 ","  528,040,000 ","  528,040,000 ",2112160000
+Goal 16,Protection of State Border,Ministry of Internal Affairs,155,Peace,"  94,900,000 ","  94,900,000 ","  94,900,000 ","  94,900,000 ",379600000
+Goal 16,Strengthening of protection and safety of cultural heritage,Ministry of Internal Affairs,155,Peace,"  134,410,000 ","  134,410,000 ","  134,410,000 ","  134,410,000 ",537640000
+Goal 16,Training and retraining of professional staff digitalization of archives scientific research and citizens service ,Ministry of Internal Affairs,155,Peace,"  7,159,000 ","  6,900,000 ","  6,900,000 ","  6,900,000 ",27859000
+Goal 3,Healthcare service of MIA and State Security Service staff ,Ministry of Internal Affairs,155,People,"  4,170,000 ","  4,170,000 ","  4,170,000 ","  4,170,000 ",16680000
+Goal 16,Raising public safety level creation and management of state assets reserve,Ministry of Internal Affairs,155,Peace,"  97,738,000 ","  97,800,000 ","  97,800,000 ","  97,800,000 ",391138000
+Goal 16,"effectiveness of the of the services of LEPL ""MIA Service Agency's"" services and their accessibility to all interested citizens ",Ministry of Internal Affairs,155,Peace,"  60,451,000 ","  56,921,000 ","  57,026,000 ","  54,176,000 ",228574000
+Goal 16,Effective functioning of emergency services ,Ministry of Internal Affairs,155,Peace,"  12,192,000 ","  11,092,000 ","  11,092,000 ","  11,092,000 ",45468000
+Goal 2,Food safety plant protection and epizootic safety ,Ministry Environmental Protection and Agriculture,156,People,"  76,573,000 ","  76,972,000 ","  77,291,000 ","  68,600,000 ",299436000
+Goal 1,Development of horde and vici culture ,Ministry Environmental Protection and Agriculture,156,People,"  14,880,000 ","  14,125,000 ","  14,430,000 ","  14,245,000 ",57680000
+Goal 2,Scientific research in agriculture ,Ministry Environmental Protection and Agriculture,156,People,"  6,542,000 ","  6,150,000 ","  6,150,000 ","  6,150,000 ",24992000
+Goal 2,Common agriculture project,Ministry Environmental Protection and Agriculture,156,People,"  96,990,000 ","  91,600,000 ","  96,000,000 ","  85,000,000 ",369590000
+Goal 2,Agriculture cooperatives supporting activities ,Ministry Environmental Protection and Agriculture,156,People,"  6,484,000 ","  6,800,000 ","  5,500,000 ","  19,200,000 ",37984000
+Goal 2,Modernization  of amelioration systems and development of agriculture sector ,Ministry Environmental Protection and Agriculture,156,People,"  76,700,000 ","  122,717,000 ","  121,614,000 ","  87,054,000 ",408085000
+Goal 15,Environmental monitoring,Ministry Environmental Protection and Agriculture,156,Planet,"  20,670,000 ","  21,700,000 ","  22,000,000 ","  22,000,000 ",86370000
+Goal 15,Establishment of protected areas' systems ad its management ,Ministry Environmental Protection and Agriculture,156,Planet,"  20,520,000 ","  15,422,000 ","  16,322,000 ","  17,222,000 ",69486000
+Goal 15,Establishment of forestry systems and their management ,Ministry Environmental Protection and Agriculture,156,Planet,"  36,633,000 ","  36,375,000 ","  39,900,000 ","  43,300,000 ",156208000
+Goal 2,Establishment and management of the state of nurseries ,Ministry Environmental Protection and Agriculture,156,People,"  1,570,000 ","  1,570,000 ","  1,570,000 ","  1,570,000 ",6280000
+Goal 12,Accessibility of information on environmental protection and support to environmental protection education,Ministry Environmental Protection and Agriculture,156,Planet,"  4,741,000 ","  3,953,000 ","  3,964,000 ","  4,103,000 ",16761000
+Goal 15,Monitoring of environment forecasting and prevention ,Ministry Environmental Protection and Agriculture,156,Planet,"  11,850,000 ","  9,950,000 ","  10,350,000 ","  10,050,000 ",42200000
+Goal 4,Pre-school education,Ministry of Education Science and Sport,156,Planet,"  754,335,000 ","  823,000,000 ","  853,000,000 ","  895,000,000 ",3325335000
+Goal 4,Vocational Education,Ministry of Education Science and Sport,156,Planet,"  68,038,000 ","  69,000,000 ","  70,000,000 ","  78,000,000 ",285038000
+Goal 4,Higher education,Ministry of Education Science and Sport,156,Planet,"  482,060,000 ","  483,000,000 ","  492,000,000 ","  500,000,000 ",1957060000
+Goal 4,Support to science and scientific research,Ministry of Education Science and Sport,156,People,"  67,319,000 ","  72,000,000 ","  74,000,000 ","  75,000,000 ",288319000
+Goal 4,Inclusive education,Ministry of Education Science and Sport,156,People,"  17,710,000 ","  18,500,000 ","  18,500,000 ","  18,500,000 ",73210000
+Goal 4,Development of infrastructure,Ministry of Education Science and Sport,156,People,"  135,500,000 ","  150,000,000 ","  180,000,000 ","  200,000,000 ",665500000
+Goal 4,State supporting activities to youth ,Ministry of Education Science and Sport,156,People,"  7,707,000 ","  8,000,000 ","  8,500,000 ","  9,000,000 ",33207000
+Goal 4,Support to cultural and sport entities,Ministry of Education Science and Sport,156,People,"  7,186,000 ","  7,200,000 ","  7,200,000 ","  7,290,000 ",28876000
+Goal 17,State programme on statistical works,Geostat,156,Partnership,"  4,500,000 ","  4,500,000 ","  4,500,000 ","  4,500,000 ",18000000`
+    </script>
+    
+
+    <div class="cont-j1">
+        <div id="chartdiv1"></div>
+        <div id="chartdiv2"></div>
+    </div>
+    <div class="cont-j2">
+        <div id="chartdiv3"></div>
+        <div id="chartdiv4"></div>
+    </div>
+    <div id="chartdiv"></div>
+    </body>
+</html>
